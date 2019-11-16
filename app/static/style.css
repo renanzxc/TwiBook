@@ -1,0 +1,17 @@
+.row{
+  margin-top: 20px;
+}
+
+.logout {
+  margin-top: 20px;
+}
+
+.comment-body {
+  padding: 0.8rem;
+  font-size: 14px; 
+
+}
+
+.comment-header {
+  padding: .2rem 0.8rem;
+}

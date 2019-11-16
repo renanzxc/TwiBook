@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="../static/login.css">
+  <title>Login</title>
+</head>
+<body>
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+
+      <form id="login-form">
+        <input type="text" id="login" class="fadeIn second" name="login" placeholder="usuário">
+        <input type="text" id="password" class="fadeIn third" name="login" placeholder="senha">
+        <input name="submit" type="button" id="login-submit" class="fadeIn fourth" onclick="enviarLogin()" value="Log In">
+      </form>
+
+      <div id="formFooter">
+        <a class="underlineHover" href="#">Ainda não tem cadastro?</a><br>
+        <a class="underlineHover" href="#">Esqueceu a senha?</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script type="text/javascript">
+    function enviarLogin(){
+      var form_data = new FormData();
+      var form = document.getElementById('login-form');
+      form_data.user = "@"+form[0].value
+      form_data.passw = form[1].value
+      console.log(form_data)
+
+
+      axios.post("/login",{form_data}).then(response => {
+          if(response.data.status == '1'){
+            window.location.replace(response.data.url)
+          }else if(response.data.status == '2'){
+            alert("usuário ou senha incorreta")
+          }
+      })
+    }
+  </script>
+
+  <script type="text/javascript">
+    var input = document.getElementById("password");
+
+    input.addEventListener("keyup", function(event) {
+
+      if (event.keyCode === 13) {
+
+        event.preventDefault();
+
+        document.getElementById("login-submit").click();
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
