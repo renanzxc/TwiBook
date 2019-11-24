@@ -178,17 +178,18 @@
                     <a href="javascript:focusComment('post {{post["id"]}}')" class="card-link"><i class="fa fa-comment" ></i> Comentar</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Compartilhar</a>
                 </div>
-                <div id="list-comments">
+                <div id="list-comments" class="comments">
+                    {% for comment in post["comment"]%}
                     <div class="card bg-light bg-primary" >
                       <div class="card-header font-weight-bold comment-header 
-                      ">@user</div>
-                      <div class="card-body comment-body">
-                        
-                        <p class="card-text">Comentário aqui.</p>
+                      ">{{comment["user"]["username"]}}</div>
+                      <div class="card-body comment-body">                        
+                        <p class="card-text">{{comment["text"]}}</p>
                       </div>
                     </div>
+                    {% endfor %}
                 </div>
-              <input id="commentInput" type="text" class="form-control commentInput" aria-label="Large" aria-describedby="inputGroup-sizing-sm" onKeyDown="if(event.keyCode==13) commentPost({{post["id"]}});" placeholder="Digite um comentário">
+              <input id="commentInput" type="text" class="form-control commentInput" aria-label="Large" aria-describedby="inputGroup-sizing-sm" onKeyDown="if(event.keyCode==13) commentPost('post {{post["id"]}}');" placeholder="Digite um comentário">
             </div>
             
             {%endfor%}

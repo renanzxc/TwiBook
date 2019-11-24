@@ -6,7 +6,7 @@ from app.models.UserModel import User
 from app.models.PostModel import Post
 from app.models.LikePostModel import LikePost
 
-from app.models.Schemas import UserSchema, PostSchema, LikePostSchema
+from app.models.Schemas import UserSchema, PostSchema, LikePostSchema, CommentSchema
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -58,7 +58,6 @@ def insere_post():
     db.session.add(post)
     db.session.commit()
     post = PostSchema().dump(post)
-    print(post)
 
     return jsonify({'status':'1','post':post})
 
@@ -66,10 +65,8 @@ def insere_post():
 def like_post():
     try:
         form = request.json["form_data"]
-        print(form)
 
         result = LikePost.query.filter(LikePost.liked_by == form["liked_by"], LikePost.liked_post == form["liked_post"]).first()
-        print(result)
         post = Post.query.filter_by(id = form["liked_post"]).first()
         
         if(result):
@@ -90,7 +87,7 @@ def like_post():
         return jsonify({'status':'1','action':action})
 
     except Exception as e:
-        return jsonify({'status':'2','error':e})
+        return jsonify({'status':'2','error':str(e)})
 
 @app.route("/delete_post/<int:idPost>", methods=['DELETE'])
 def delete_post(idPost):
@@ -104,7 +101,8 @@ def delete_post(idPost):
 def comment_post(idPost):
     form = request.json["form_data"]
     form['of'] = idPost
-    db.session.add(form)
+    comment = CommentSchema().load(form)
+    db.session.add(comment)
     db.session.commit()
 
-    return jsonify({'status':'1', 'comment':form})
+    return jsonify({'status':'1', 'comment':CommentSchema().dump(comment)})

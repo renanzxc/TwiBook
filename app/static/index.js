@@ -116,12 +116,20 @@ function deletePost(postId){
 
 function commentPost(postId){
     var form_data = new FormData();
-    form_data.create_by = parseInt(document.getElementById("idUser").value)
+    form_data.created_by = parseInt(document.getElementById("idUser").value)
     form_data.text = document.getElementById('commentInput').value
     document.getElementById('commentInput').value = ''
-    axios.post("/comment_post/"+parseInt(postId),{form_data}).then(response => {
+    axios.post("/comment_post/"+parseInt(postId.split(" ")[1]),{form_data}).then(response => {
         if(response.data.status == '1'){
-            console.log("aaaaaaa")
+            let element = document.getElementById(postId).getElementsByClassName("comments")
+            element[0].innerHTML = element[0].innerHTML+
+            '<div class="card bg-light bg-primary" >'+
+              '<div class="card-header font-weight-bold comment-header '+
+              `">${response.data.comment.user.username}</div>`+
+              '<div class="card-body comment-body">'+                        
+                `<p class="card-text">${response.data.comment.text}</p>`+
+              '</div>'+
+            '</div>'
         }
     })
 }

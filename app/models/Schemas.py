@@ -21,10 +21,12 @@ class CommentSchema(ma.ModelSchema):
         model = Comment
         include_fk = True
 
+    user = fields.Nested(UserSchema, only=["id","username","name"])
+
 class PostSchema(ma.ModelSchema):
     class Meta:
         model = Post
         include_fk = True
 
     user = fields.Nested(UserSchema, only=["id","username","name"])
-    comment = fields.Nested(CommentSchema)
+    comment = fields.Nested(CommentSchema, many=True)
